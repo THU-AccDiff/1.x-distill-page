@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="1.x-Distill: Breaking the Diversity, Quality, and Efficiency Barrier in Distribution Matching Distillation">
+  <meta name="description" content="Project page for 1.x-Distill, a fractional-step distillation framework for overcoming diversity collapse and quality degradation in extreme few-step distribution matching distillation.">
+  <meta name="keywords" content="1.x-Distill, diffusion models, distribution matching distillation, DMD, few-step generation, text-to-image, fractional-step distillation, caching">
+  <meta name="author" content="Haoyu Li, Tingyan Wen, Lin Qi, Zhe Wu, Yihuang Chen, Xing Zhou, Lifei Zhu, XueQian Wang, Kai Zhang">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="1.x-Distill Project Page">
+  <meta property="og:title" content="1.x-Distill: Breaking the Diversity, Quality, and Efficiency Barrier in Distribution Matching Distillation">
+  <meta property="og:description" content="A fractional-step distillation framework that improves diversity, image quality, and efficiency for extreme few-step text-to-image generation.">
+  <meta property="og:image" content="./assets/teaser_main.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="1.x-Distill teaser figure">
+
+  <title>1.x-Distill Project Page</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --maxw: 1080px;
+      --bg-soft: #f6f7fb;
+      --text-main: #20232a;
+      --text-sub: #4f566b;
+      --accent: #4f7cff;
+      --line: #e6e9f2;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-main);
+      background: #ffffff;
+    }
+    .container.is-max-desktop { max-width: var(--maxw) !important; }
+    .section { padding: 2.7rem 1.25rem; }
+    .hero-soft { background: linear-gradient(180deg, #fbfcff 0%, #f4f7ff 100%); }
+    .stripe { background: var(--bg-soft); }
+    .publication-title {
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem !important;
+    }
+    .gradient-title {
+      background: linear-gradient(90deg, #4f7cff 0%, #8b5cf6 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
+    }
+    .tight { margin-top: 0.25rem; margin-bottom: 0.25rem; }
+    .authors, .aff { font-weight: 600; }
+    .small-note { font-size: 0.95rem; color: var(--text-sub); }
+    .section-title {
+      text-align: center;
+      margin-bottom: 0.8rem !important;
+      letter-spacing: -0.02em;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-sub);
+      max-width: 880px;
+      margin: 0 auto 1.5rem;
+      font-size: 1.04rem;
+    }
+    .button.is-rounded { border-radius: 999px; }
+    .btn-gap { gap: 0.75rem; flex-wrap: wrap; }
+    .media-frame {
+      background: #fff;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .img-responsive {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .caption {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-top: 0.8rem;
+      text-align: center;
+    }
+    .content p { color: #273043; }
+    .highlight-card {
+      height: 100%;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.15rem 1.1rem;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    }
+    .highlight-card h3 {
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-bottom: 0.55rem;
+    }
+    .metric-note {
+      font-size: 0.95rem;
+      color: var(--text-sub);
+    }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      background: #edf2ff;
+      color: #3656c9;
+      padding: 0.28rem 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 0.15rem 0.35rem 0.15rem 0;
+    }
+    .figure-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .figure-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .motivation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+    .motivation-wide {
+      max-width: 920px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .quant-stack > div {
+      margin-bottom: 1.25rem;
+    }
+    .footer {
+      background: #ffffff;
+      border-top: 1px solid var(--line);
+    }
+    .scroll-to-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 44px;
+      height: 44px;
+      border: none;
+      border-radius: 999px;
+      background: #111827;
+      color: white;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      z-index: 20;
+      opacity: 0;
+      visibility: hidden;
+      transition: 0.2s ease;
+    }
+    .scroll-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    pre {
+      border-radius: 16px;
+      background: #0f172a;
+      color: #e5edf9;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+    }
+    code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+
+    @media (max-width: 768px) {
+      .section { padding: 2rem 1rem; }
+      .figure-grid-2, .figure-grid-3, .motivation-grid { grid-template-columns: 1fr; }
+      .publication-title { font-size: 2rem !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="scroll-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <section class="hero hero-soft">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              <span class="gradient-title">🌈 1.x-Distill</span>: Breaking the Diversity, Quality, and Efficiency Barrier in Distribution Matching Distillation
+            </h1>
+
+            <p class="authors tight">
+              Haoyu Li<sup>1*</sup>, Tingyan Wen<sup>1*</sup>, Lin Qi<sup>2&dagger;</sup>, Zhe Wu<sup>2</sup>, Yihuang Chen<sup>2</sup>,
+              Xing Zhou<sup>2</sup>, Lifei Zhu<sup>2</sup>, XueQian Wang<sup>1</sup>, Kai Zhang<sup>1&dagger;</sup>
+            </p>
+            <p class="aff tight">
+              <sup>1</sup> Tsinghua University &nbsp;&nbsp; <sup>2</sup> Central Media Technology Institute, Huawei
+            </p>
+            <p class="small-note tight">
+              (<sup>*</sup> Equal Contribution &nbsp; <sup>&dagger;</sup> Corresponding Author)
+            </p>
+
+            <div class="buttons is-centered btn-gap" style="margin-top: 1rem;">
+              <a class="button is-dark is-rounded" href="./1_x_Distill.pdf" target="_blank" rel="noopener">
+                <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                <span>Paper PDF</span>
+              </a>
+              <a class="button is-dark is-rounded" href="#" target="_blank" rel="noopener">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code: pending release</span>
+              </a>
+            </div>
+
+            <div class="media-frame" style="margin-top: 1.3rem;">
+              <img class="img-responsive" src="./assets/teaser_main.png" alt="1.x-Distill teaser image">
+            </div>
+            <p class="caption">
+              ✨ 1.x-Distill mitigates diversity and quality degradation in extreme few-step distribution matching distillation, enabling practical 1.x-step generation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stripe">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">📌 Abstract</h2>
+      <div class="content">
+        <p>
+          Diffusion models produce high-quality text-to-image results, but their iterative denoising is computationally expensive. Distribution Matching Distillation (DMD) emerges as a promising path to few-step distillation, but suffers from diversity collapse and fidelity degradation when reduced to two steps or fewer. We present <b>1.x-Distill</b>, the first fractional-step distillation framework that breaks the integer-step constraint of prior few-step methods and establishes 1.x-step generation as a practical regime for distilled diffusion models. Specifically, we first analyze the overlooked role of teacher CFG in DMD and introduce a simple yet effective modification to suppress mode collapse. Then, to improve performance under extreme steps, we introduce <b>Stagewise Focused Distillation</b>, a two-stage strategy that learns coarse structure through diversity-preserving distribution matching and refines details with inference-consistent adversarial distillation. Furthermore, we design a lightweight compensation module for <b>Distill–Cache co-Training</b>, which naturally incorporates block-level caching into our distillation pipeline. Experiments on SD3-Medium and SD3.5-Large show that 1.x-Distill surpasses prior few-step methods, achieving better quality and diversity at 1.67 and 1.74 effective NFEs, respectively, with up to 33× speedup over original 28×2 NFE sampling.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">💡 Motivation</h2>
+      <!-- <p class="section-subtitle motivation-wide">
+        Distribution matching distillation becomes fragile under extreme step reduction: diversity collapses, and image quality drops when each denoising step must simultaneously handle global structure formation and fine-detail synthesis.
+      </p> -->
+
+      <div class="motivation-grid">
+        <div class="highlight-card">
+          <h3>🎨 Diversity issue in DMD</h3>
+          <p>
+            DMD-like methods have emerged as strong baselines for few-step generation, yet under very small step budgets they often become increasingly mode-seeking. The student is biased toward dominant modes, which leads to reduced structural diversity and less varied generations across samples.
+          </p>
+        </div>
+        <div class="highlight-card">
+          <h3>🔍 Quality issue at extreme few steps</h3>
+          <p>
+            When the denoising process is compressed to two steps or fewer, each step must shoulder too much semantic and visual responsibility. This causes an optimization mismatch and often results in blurry textures, missing details, or unstable visual quality.
+          </p>
+        </div>
+      </div>
+
+      <div class="highlight-card" style="margin-top: 1rem;">
+        <h3>🚀 Our goal</h3>
+        <p>
+          We aim to push distribution matching distillation into the practical <b>1.x-NFE</b> regime while preserving <b>diversity</b>, improving <b>image quality</b>. This motivates a unified framework that explicitly addresses these three aspects rather than optimizing only for speed.
+        </p>
+        <div style="margin-top: 0.8rem;">
+          <span class="pill">Diversity-preserving</span>
+          <span class="pill">High-quality</span>
+          <span class="pill">Fractional-step</span>
+          <span class="pill">Efficient caching</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stripe">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">🧠 Method Overview</h2>
+
+      <div class="media-frame" style="margin-bottom: 1rem;">
+        <img class="img-responsive" src="./assets/overview.png" alt="Overview of the 1.x-Distill framework">
+      </div>
+      <p class="caption">
+        We integrate guidance control strategy and cache design into a unified two-stage training framework.
+        <b>Stage I:</b> Train the generator with DMD loss. Within the DMD framework, we apply <em>importance sampling</em> over diffusion timestep <i>t</i> and <em>control the guidance</em> according to the sampled <i>t</i> when computing the real score.
+        <b>Stage II:</b> Train the generator with a pixel-space adversarial loss. Our GAN framework predicts x&#770;<sub>0</sub> along the generator inference path, which naturally incorporates the block-cache design. The generator and the MLP module are jointly optimized in this stage.
+      </p>
+
+      <div class="figure-grid-3" style="margin-top: 1.2rem;">
+        <div class="highlight-card">
+          <h3>🎨 Diversity: Controlling Guidance in DMD</h3>
+          <p>
+            We revisit the role of teacher CFG in distribution matching and show that overly strong guided supervision at high-noise timesteps can prematurely drive the student toward dominant modes. We therefore introduce timestep-aware guidance control to improve mode coverage and alleviate diversity collapse.
+          </p>
+        </div>
+        <div class="highlight-card">
+          <h3>🔍 Quality: Stagewise Focused Distillation</h3>
+          <p>
+            We divide training into two complementary stages. Stage I emphasizes coarse structure learning and diversity-preserving distribution matching, while Stage II performs detail-focused adversarial refinement to recover realism and fine-grained visual quality.
+          </p>
+        </div>
+        <div class="highlight-card">
+          <h3>⚡ Efficiency: Distill–Cache co-Training</h3>
+          <p>
+            We incorporate block-level caching into distilled inference by learning a lightweight reuse-error compensation module. This makes caching compatible with the distilled generator and enables efficient 1.x-step generation beyond conventional integer-step sampling.
+          </p>
+        </div>
+      </div>
+
+      <div class="figure-grid-2" style="margin-top: 1.25rem;">
+        <div>
+          <div class="media-frame">
+            <img class="img-responsive" src="./assets/guidance_control.png" alt="Guidance control illustration">
+          </div>
+          <p class="caption">Guidance control for preserving diversity in distribution matching distillation.</p>
+        </div>
+        <div>
+          <div class="media-frame">
+            <img class="img-responsive" src="./assets/cache.png" alt="Caching design figure">
+          </div>
+          <p class="caption">Cache-aware design for efficient fractional-step generation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">🖼️ Qualitative Results</h2>
+
+      <div class="content">
+        <p>
+          Our 4-step SFD already yields cleaner and more appealing generations than existing baselines. After further enabling caching, 1.x-Distill remains strong at only 1.67 effective NFE, preserving coherent structure while improving realism and fine-detail rendering.
+        </p>
+      </div>
+
+      <div class="media-frame" style="margin-bottom: 1rem;">
+        <img class="img-responsive" src="./assets/qualitative_sd3m.png" alt="Qualitative comparison on SD3-Medium">
+      </div>
+      <p class="caption">
+        Qualitative comparison on SD3-Medium.
+      </p>
+
+      <div class="columns is-variable is-6" style="margin-top: 0.8rem;">
+        <div class="column">
+          <div class="media-frame">
+            <img class="img-responsive" src="./assets/diversity.png" alt="Diversity comparison figure">
+          </div>
+          <p class="caption">Diversity comparison on SD3-Medium.</p>
+        </div>
+        <div class="column">
+          <div class="media-frame">
+            <img class="img-responsive" src="./assets/sd35l.png" alt="Additional qualitative comparison on SD3.5-Large">
+          </div>
+          <p class="caption">Qualitative comparison on SD3.5-Large.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stripe">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">📊 Quantitative Evaluation</h2>
+      <p class="section-subtitle">
+        Across COCO-10K, DPG-Bench, LPIPS diversity, and user study, 1.x-Distill achieves a strong quality–diversity–efficiency trade-off under aggressive step compression.
+      </p>
+
+      <div class="quant-stack">
+        <div>
+          <div class="media-frame">
+            <img class="img-responsive" src="./assets/table1_coco10k.png" alt="Quantitative comparison on COCO-10K">
+          </div>
+          <p class="caption">Quantitative comparison on COCO-10K.</p>
+        </div>
+
+        <div>
+          <div class="media-frame">
+            <img class="img-responsive" src="./assets/table2_table3_dpg_lpips.png" alt="DPG-Bench and LPIPS evaluation tables">
+          </div>
+          <p class="caption">DPG-Bench and LPIPS diversity evaluation.</p>
+        </div>
+
+        <div>
+          <div class="media-frame">
+            <img class="img-responsive" src="./assets/user_study.png" alt="User study figure">
+          </div>
+          <p class="caption">User study of 1.x-Distill against representative few-step baselines.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 section-title">📖 Citation</h2>
+      <p class="section-subtitle">
+        The current paper file is an anonymous submission version.
+      </p>
+      <pre><code>@article{one_x_distill,
+  title   = {1.x-Distill: Breaking the Diversity, Quality, and Efficiency Barrier in Distribution Matching Distillation},
+  author  = {Author information to be updated in the public release},
+  journal = {TBD},
+  year    = {2026}
+}</code></pre>
+    </div>
+  </section>
+
+  <script>
+    const scrollBtn = document.querySelector('.scroll-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollBtn.classList.add('show');
+      } else {
+        scrollBtn.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>
